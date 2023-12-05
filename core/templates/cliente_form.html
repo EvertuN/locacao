@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>Cadastro de Cliente</title>
+</head>
+<body>
+    <main class="container">
+        <h1>Cadastro de Cliente</h1>
+        <form method="post" action="{% url 'clientes_cadastro' %}">
+            {% csrf_token %}
+            <label for="id_nome">Nome</label>
+            <input type="text" id="id_nome" name="nome" class="input" required>
+
+            <label for="id_estado_hab">Estado</label>
+            <input type="text" id="id_estado_hab" name="estado_hab" class="input" required>
+
+            <label for="id_end">Endereço</label>
+            <input type="text" id="id_end" name="end" class="input" required>
+
+            <label for="id_telefone">Telefone</label>
+            <input type="tel" id="id_telefone" name="telefone" class="input" required>
+
+            <button type="submit" class="button">Cadastrar</button>
+        </form>
+    </main>
+</body>
+</html>
