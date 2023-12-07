@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, redirect
-from .forms import ClienteForm, ContratoForm
+from .forms import ClienteForm, ContratoForm, TipoVeiculoForm, VeiculoForm
 from django.views import View
 
 
@@ -57,6 +57,46 @@ class ContratoCadastroView(View):
             return redirect('admin:core_contrato_changelist')
         else:
             messages.error(request, 'Não foi possível cadastrar o contrato.')
+            for field, errors in form.errors.items():
+                messages.error(request, f"{field}: {', '.join(errors)}")
+        return render(request, self.template_name, {'form': form})
+
+
+class TiposVeiculosCadastroView(View):
+    template_name = 'tipo_veiculo.html'
+
+    def get(self, request, *args, **kwargs):
+        form = TipoVeiculoForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = TipoVeiculoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Contrato cadastrado com sucesso!')
+            return redirect('admin:core_tipoveiculo_changelist')
+        else:
+            messages.error(request, 'Não foi possível cadastrar o contrato.')
+            for field, errors in form.errors.items():
+                messages.error(request, f"{field}: {', '.join(errors)}")
+        return render(request, self.template_name, {'form': form})
+
+
+class VeiculosCadastroView(View):
+    template_name = 'veiculo.html'
+
+    def get(self, request, *args, **kwargs):
+        form = VeiculoForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = VeiculoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Veiculo cadastrado com sucesso!')
+            return redirect('admin:core_veiculo_changelist')
+        else:
+            messages.error(request, 'Não foi possível cadastrar o cliente.')
             for field, errors in form.errors.items():
                 messages.error(request, f"{field}: {', '.join(errors)}")
         return render(request, self.template_name, {'form': form})
