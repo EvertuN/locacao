@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>Cadastro de Contrato</title>
+</head>
+<body>
+    <main class="container">
+        <h1>Cadastro de Contrato</h1>
+        <form method="post" action="{% url 'contratos_cadastro' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button">Cadastrar</button>
+        </form>
+    </main>
+</body>
+</html>

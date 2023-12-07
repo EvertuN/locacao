@@ -20,52 +20,45 @@ class TipoVeiculo(models.Model):
 class Veiculo(models.Model):
     numero = models.AutoField(primary_key=True)
     data_proxima_manutencao = models.DateField(verbose_name="Próxima Manutenção")
-    placa = models.CharField(max_length=7, verbose_name="Placa", )
-    tipo = models.ForeignKey(TipoVeiculo, on_delete=models.CASCADE)
+    placa = models.CharField(max_length=7, verbose_name="Placa")
+    tipo_veiculo = models.ForeignKey(TipoVeiculo, on_delete=models.CASCADE, null=True, blank=True)
 
-    class Meta:
+    """class Meta:
         verbose_name = 'Veiculo'
         verbose_name_plural = 'Veiculos'
         # ordering = ['-publicado']
+    """
 
     def __str__(self):
-        return self.tipo
+        return f"{self.tipo_veiculo.nome} - {self.placa}" if self.tipo_veiculo else f"Veiculo - {self.placa}"
 
 
-class Automovel(models.Model):
-    num_portas = models.IntegerField(verbose_name="Número de Portas")
-    dir_hidraulica = models.BooleanField(default=False, verbose_name="Direção Hidráulica")
-    cambio_auto = models.BooleanField(default=False, verbose_name="Câmbio Automático")
-
-    class Meta:
-        verbose_name = 'Automóvel'
-        verbose_name_plural = 'Automóveis'
-        # ordering = ['-publicado']
-
-    def __str__(self):
-        return f"Automóvel {self.pk}"
-
-
-class Onibus(models.Model):
+"""class Onibus(models.Model):
+    veiculo = models.OneToOneField(Veiculo, on_delete=models.CASCADE, primary_key=True)
     num_passageiros = models.IntegerField(verbose_name="Número de Passageiros")
     leito = models.BooleanField(default=False)
     sanitario = models.BooleanField(default=False, verbose_name="Sanitário")
 
-    class Meta:
-        verbose_name = 'Ônibus'
-        verbose_name_plural = 'Ônibus'
-        # ordering = ['-publicado']
+    #class Meta:
+    #    verbose_name = 'Ônibus'
+    #    verbose_name_plural = 'Ônibus'
+    #    # ordering = ['-publicado']
+    
 
     def __str__(self):
-        return self
+        return f"Ônibus - {self.num_passageiros} passageiros"
+
+    def get_tipo(self):
+        return f"Ônibus - {self.num_passageiros} passageiros"
+"""
 
 
 class Contrato(models.Model):
     numero = models.AutoField(primary_key=True)
-    data = models.DateField()
+    data = models.DateField(verbose_name="Data da Locação")
     duracao = models.IntegerField(verbose_name="Duração do contrato(Em dias)")
-    cliente = models.ForeignKey(User, on_delete=models.CASCADE)
-    veiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE)
+    cliente = models.ForeignKey('Cliente', on_delete=models.CASCADE)
+    veiculo = models.ForeignKey('Veiculo', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Contrato'
@@ -73,7 +66,7 @@ class Contrato(models.Model):
         # ordering = ['-publicado']
 
     def __str__(self):
-        return self
+        return f'{self.numero} - {self.cliente.nome}'
 
 
 class Cliente(models.Model):
